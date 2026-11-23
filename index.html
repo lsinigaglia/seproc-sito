@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEPROC Impianti e Manutenzioni</title>
+<meta name="description" content="SEPROC, Roma: idraulica, impianti elettrici, climatizzazione, caldaie e riscaldamento, manutenzioni e pronto intervento.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: allineato a sinistra; il manometro del biglietto da visita è l'unico
+   elemento forte, l'onda in ottone porta dentro la fascia verde dei servizi. */
+:root{
+  color-scheme: light;
+  --carta:#EDF0EA;      /* bianco freddo del biglietto, virato al verde */
+  --foglio:#F8F9F5;
+  --salvia:#44513F;     /* verde del biglietto */
+  --bosco:#2A3328;      /* testo e fasce scure */
+  --ottone:#A98545;     /* filetto e raccordi */
+  --ottone-chiaro:#D9BF87;
+  --valvola:#C33222;    /* la leva rossa: solo per chiamare */
+  --velo:rgba(42,51,40,.14);
+  --display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --testo:"Lato","Helvetica Neue",Arial,sans-serif;
+  --gutter:clamp(20px,5vw,56px);
+  --max:1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--carta);color:var(--bosco);font:400 17px/1.6 var(--testo);-webkit-font-smoothing:antialiased}
+img,svg{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--valvola);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--display);font-stretch:118%;font-weight:700;line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+.wrap{max-width:var(--max);margin:0 auto;padding-inline:var(--gutter)}
+
+/* testata */
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:22px}
+.marchio{text-decoration:none;display:grid;gap:5px}
+.marchio b{font:700 26px/1 var(--display);font-stretch:125%;letter-spacing:.04em;color:var(--salvia)}
+.marchio span{font:400 10px/1 var(--testo);letter-spacing:.24em;text-transform:uppercase;color:var(--salvia)}
+.top-tel{font:700 16px/1 var(--display);font-stretch:110%;text-decoration:none;padding:12px 16px;border:1.5px solid var(--salvia);border-radius:999px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.top-tel:hover{background:var(--salvia);color:var(--foglio)}
+
+/* apertura */
+.apri{display:grid;gap:40px;padding-block:28px 12px;align-items:center}
+.apri h1{font-size:clamp(40px,9.4vw,84px);font-weight:800}
+.apri .sotto{font-size:clamp(18px,2.2vw,21px);max-width:34em;margin-top:22px}
+.azioni{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:10px;font:700 17px/1 var(--display);font-stretch:110%;text-decoration:none;padding:17px 22px;border-radius:999px;border:1.5px solid transparent;cursor:pointer;font-variant-numeric:tabular-nums}
+.btn-chiama{background:var(--valvola);color:#fff}
+.btn-chiama:hover{background:#a82819}
+.btn-linea{border-color:var(--salvia);background:transparent;color:var(--bosco)}
+.btn-linea:hover{background:var(--salvia);color:var(--foglio)}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* manometro */
+.mano{background:var(--foglio);border:1px solid var(--velo);border-radius:28px;padding:22px 22px 24px;max-width:440px;width:100%;justify-self:center}
+.mano h2{font-size:20px;font-stretch:110%}
+.mano svg{display:block;width:100%;height:auto;margin:6px auto 0;max-width:330px}
+#ago{transform-origin:150px 150px;transition:transform .9s cubic-bezier(.3,1.4,.5,1)}
+.cursore{display:grid;gap:8px;margin-top:4px}
+.cursore label{font-size:14px;color:var(--salvia)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:32px;background:transparent;margin:0;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--valvola) 0 25%,var(--salvia) 25% 37.5%,var(--ottone-chiaro) 37.5% 62.5%,var(--valvola) 62.5%)}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--valvola) 0 25%,var(--salvia) 25% 37.5%,var(--ottone-chiaro) 37.5% 62.5%,var(--valvola) 62.5%)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--foglio);border:3px solid var(--bosco);margin-top:-11px}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--foglio);border:3px solid var(--bosco)}
+.lettura{margin-top:12px;min-height:6.6em}
+.lettura strong{display:block;font:700 19px/1.2 var(--display);font-stretch:110%;margin-bottom:4px}
+.lettura strong.allarme{color:var(--valvola)}
+.lettura p{font-size:15.5px;line-height:1.5}
+.nota{font-size:13px;color:var(--salvia);margin-top:10px}
+
+/* onda del biglietto */
+.onda{display:block;width:100%;height:clamp(60px,10vw,130px);margin-bottom:-1px}
+
+/* servizi */
+.verde{background:var(--salvia);color:var(--foglio)}
+.servizi{padding-block:24px 72px}
+.servizi h2,.quando h2,.passi h2{font-size:clamp(30px,5vw,48px)}
+.servizi .intro{max-width:36em;margin-top:14px;color:#DDE3D8}
+.elenco{list-style:none;margin:40px 0 0;padding:0;border-top:1px solid rgba(255,255,255,.22)}
+.elenco li{display:grid;grid-template-columns:44px 1fr;gap:6px 18px;padding:26px 0;border-bottom:1px solid rgba(255,255,255,.22);align-items:start}
+.elenco svg{width:36px;height:36px;stroke:var(--ottone-chiaro);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-top:2px}
+.elenco h3{font-size:clamp(23px,3.4vw,32px)}
+.elenco p{grid-column:2;color:#DDE3D8;max-width:38em}
+
+/* quando chiamare */
+.quando{padding-block:76px}
+.segnali{display:grid;gap:30px 48px;margin-top:36px}
+.segnali h3{font-size:21px;font-stretch:110%;padding-top:16px;border-top:3px solid var(--ottone)}
+.segnali p{margin-top:8px;max-width:30em}
+
+/* come lavoriamo */
+.passi{padding-block:0 84px}
+.passi ol{list-style:none;counter-reset:p;margin:36px 0 0;padding:0;display:grid;gap:28px 40px}
+.passi li{counter-increment:p;display:grid;grid-template-columns:auto 1fr;gap:4px 18px}
+.passi li::before{content:counter(p);grid-row:span 2;font:800 54px/.9 var(--display);font-stretch:125%;color:var(--ottone)}
+.passi h3{font-size:21px;font-stretch:110%;align-self:end}
+.passi p{grid-column:2;max-width:26em}
+
+/* contatti */
+.contatti{background:var(--bosco);color:var(--foglio);padding-block:72px 110px}
+.contatti h2{font-size:clamp(30px,5vw,48px)}
+.contatti .numero{display:inline-block;margin-top:26px;font:800 clamp(38px,10.5vw,96px)/1 var(--display);font-stretch:118%;letter-spacing:-.02em;text-decoration:none;color:var(--ottone-chiaro);font-variant-numeric:tabular-nums}
+.contatti .numero:hover{color:#fff}
+.contatti .mail{display:block;margin-top:14px;font-size:clamp(18px,3vw,24px);overflow-wrap:anywhere}
+.contatti .azioni .btn-linea{border-color:rgba(255,255,255,.5);color:var(--foglio)}
+.contatti .azioni .btn-linea:hover{background:var(--foglio);color:var(--bosco)}
+.piede{margin-top:56px;padding-top:20px;border-top:1px solid rgba(255,255,255,.2);font-size:14px;color:#B9C2B4;display:flex;flex-wrap:wrap;gap:6px 24px;justify-content:space-between}
+
+/* barra fissa su telefono */
+.barra{position:fixed;left:0;right:0;bottom:0;z-index:5;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(237,240,234,.94);backdrop-filter:blur(8px);border-top:1px solid var(--velo)}
+.barra .btn{width:100%;justify-content:center}
+
+@media (min-width:860px){
+  .apri{grid-template-columns:1.15fr .85fr;gap:56px;padding-block:48px 24px}
+  .mano{justify-self:end}
+  .elenco li{grid-template-columns:44px minmax(260px,.8fr) 1.2fr;align-items:center}
+  .elenco p{grid-column:3}
+  .segnali{grid-template-columns:1fr 1fr}
+  .passi ol{grid-template-columns:repeat(3,1fr)}
+  .barra{display:none}
+  .contatti{padding-bottom:56px}
+}
+@media (max-width:420px){
+  .top-tel{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  #ago{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="wrap top">
+  <a class="marchio" href="#inizio" aria-label="SEPROC impianti e manutenzioni">
+    <b>SEPROC</b>
+    <span>Impianti e manutenzioni</span>
+  </a>
+  <a class="top-tel" href="tel:+393337599212">333 759 9212</a>
+</header>
+
+<main id="inizio">
+  <section class="wrap apri">
+    <div>
+      <h1>Caldaie, climatizzatori e impianti. A Roma.</h1>
+      <p class="sotto">Installiamo, ripariamo e teniamo in ordine gli impianti di casa, negozio e ufficio: acqua, luce, caldo e freddo. Un solo numero per tutto.</p>
+      <div class="azioni">
+        <a class="btn btn-chiama" href="tel:+393337599212">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+          Chiama 333 759 9212
+        </a>
+        <a class="btn btn-linea" href="#servizi">Guarda i servizi</a>
+      </div>
+    </div>
+
+    <div class="mano">
+      <h2>Quanto segna il manometro della tua caldaia?</h2>
+      <svg viewBox="0 0 300 250" role="img" aria-labelledby="mano-t">
+        <title id="mano-t">Manometro da 0 a 4 bar</title>
+        <circle cx="150" cy="150" r="142" fill="#A98545"/>
+        <circle cx="150" cy="150" r="136" fill="#D9BF87"/>
+        <circle cx="150" cy="150" r="128" fill="#FFFFFF"/>
+        <g id="scala"></g>
+        <text x="150" y="104" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-size="11" letter-spacing="3" fill="#44513F" font-weight="700">SEPROC</text>
+        <text x="150" y="206" text-anchor="middle" font-family="Archivo,Arial,sans-serif" font-size="15" fill="#2A3328" font-weight="700">bar</text>
+        <g id="ago" style="transform:rotate(-135deg)">
+          <path d="M150 46 L154.5 150 L150 172 L145.5 150 Z" fill="#2A3328"/>
+        </g>
+        <circle cx="150" cy="150" r="11" fill="#A98545"/>
+        <circle cx="150" cy="150" r="4" fill="#2A3328"/>
+      </svg>
+      <div class="cursore">
+        <label for="pressione">Sposta la lancetta dove la vedi tu</label>
+        <input type="range" id="pressione" min="0" max="4" step="0.1" value="1.3" aria-describedby="lettura">
+      </div>
+      <div class="lettura" id="lettura" aria-live="polite">
+        <strong id="lettura-t">1,3 bar. Tutto in ordine.</strong>
+        <p id="lettura-p">A impianto freddo la lancetta deve stare tra 1 e 1,5 bar.</p>
+      </div>
+      <p class="nota">Valori indicativi: quelli giusti per il tuo modello sono sul libretto della caldaia.</p>
+    </div>
+  </section>
+
+  <svg class="onda" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 96 C 320 150, 620 96, 900 52 S 1300 6, 1440 22 L1440 130 L0 130 Z" fill="#44513F"/>
+    <path d="M0 80 C 320 134, 620 80, 900 36 S 1300 -10, 1440 6" fill="none" stroke="#A98545" stroke-width="3" vector-effect="non-scaling-stroke"/>
+  </svg>
+
+  <section class="verde" id="servizi">
+    <div class="wrap servizi">
+      <h2>Cosa facciamo</h2>
+      <p class="intro">Impianti nuovi, sostituzioni, riparazioni e controlli periodici. Se non sai da dove viene il problema, chiamaci lo stesso: lo troviamo noi.</p>
+      <ul class="elenco">
+        <li>
+          <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 4c5 7 9 11.500 9 17a9 9 0 0 1-18 0c0-5.500 4-10 9-17z"/></svg>
+          <h3>Idraulica</h3>
+          <p>Perdite, scarichi otturati, rubinetti e sanitari, tubazioni da rifare, impianti per bagni e cucine.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M20 3 8 20h9l-2 13 13-18h-9z"/></svg>
+          <h3>Elettrica</h3>
+          <p>Quadri, prese e punti luce, salvavita che scatta, impianti nuovi e messa a norma di quelli vecchi.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3v30M5 10.500l26 15M31 10.500l-26 15M14 5l4 4 4-4M14 31l4-4 4 4M5.500 16l5.500-1.500L9.500 9M30.500 20l-5.500 1.500 1.500 5.500M26.500 9 25 14.500l5.500 1.500M9.500 27l1.500-5.500L5.500 20"/></svg>
+          <h3>Climatizzazione</h3>
+          <p>Installazione di condizionatori e pompe di calore, pulizia e igienizzazione, ricerca guasti, manutenzione stagionale.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3c1 6 9 9 9 18a9 9 0 0 1-18 0c0-4 2-6 3.500-8.500C13 15 15 16 15.500 17 16 12 16 8 18 3z"/><path d="M18 31a4 4 0 0 0 4-4c0-3-4-5-4-8-1 3-4 5-4 8a4 4 0 0 0 4 4z"/></svg>
+          <h3>Caldaie e riscaldamento</h3>
+          <p>Installazione e sostituzione della caldaia, manutenzione periodica, termosifoni freddi, valvole e termostati.</p>
+        </li>
+        <li>
+          <svg viewBox="0 0 36 36" aria-hidden="true"><path d="M30 9.500a7 7 0 0 1-9.500 8L9 29a2.800 2.800 0 0 1-4-4l11.500-11.500a7 7 0 0 1 8-9.500l-4.500 4.500 1 4 4 1z"/></svg>
+          <h3>Manutenzioni e pronto intervento</h3>
+          <p>Guasti che non possono aspettare e controlli programmati, per case, condomini, negozi e uffici.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap quando">
+    <h2>Quando conviene chiamare</h2>
+    <div class="segnali">
+      <div>
+        <h3>La caldaia perde pressione</h3>
+        <p>Se la ricarichi e dopo qualche giorno è di nuovo sotto 1 bar, da qualche parte l'acqua esce. Meglio trovarla prima dell'inverno.</p>
+      </div>
+      <div>
+        <h3>I termosifoni scaldano a metà</h3>
+        <p>Caldi sotto e freddi sopra c'è aria da sfiatare. Freddi sotto c'è fango nell'impianto, e serve un lavaggio.</p>
+      </div>
+      <div>
+        <h3>Il condizionatore fa odore o gocciola</h3>
+        <p>Filtri e batteria sporchi, oppure lo scarico della condensa è intasato. Si risolve con una pulizia fatta bene.</p>
+      </div>
+      <div>
+        <h3>Il salvavita scatta spesso</h3>
+        <p>Non è un fastidio da sopportare: c'è una dispersione o un apparecchio guasto. Si misura e si trova.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap passi">
+    <h2>Come lavoriamo</h2>
+    <ol>
+      <li><h3>Ci chiami</h3><p>Ci racconti cosa succede, anche con una foto. Spesso basta per capire di cosa c'è bisogno.</p></li>
+      <li><h3>Veniamo a vedere</h3><p>Controlliamo l'impianto e ti diciamo il costo prima di iniziare.</p></li>
+      <li><h3>Facciamo il lavoro</h3><p>Proviamo tutto insieme a te e lasciamo pulito.</p></li>
+    </ol>
+  </section>
+</main>
+
+<footer class="contatti" id="contatti">
+  <div class="wrap">
+    <h2>Hai un guasto o un lavoro da fare?</h2>
+    <a class="numero" href="tel:+393337599212">333 759 9212</a>
+    <a class="mail" href="mailto:seprocroma@gmail.com">seprocroma@gmail.com</a>
+    <div class="azioni">
+      <button class="btn btn-linea" type="button" id="copia">Copia il numero</button>
+    </div>
+    <div class="piede">
+      <span>SEPROC Impianti e Manutenzioni, Roma</span>
+      <span>+39 333 759 9212</span>
+    </div>
+  </div>
+</footer>
+
+<div class="barra">
+  <a class="btn btn-chiama" href="tel:+393337599212">Chiama 333 759 9212</a>
+</div>
+
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg', cx=150, cy=150;
+  function ang(v){return -135+v/4*270}
+  function pt(v,r){var a=ang(v)*Math.PI/180;return [cx+r*Math.sin(a), cy-r*Math.cos(a)]}
+  function el(n,at){var e=document.createElementNS(NS,n);for(var k in at)e.setAttribute(k,at[k]);return e}
+  function arco(a,b,r,col,w){var p=pt(a,r),q=pt(b,r),big=(ang(b)-ang(a))>180?1:0;
+    return el('path',{d:'M'+p[0].toFixed(1)+' '+p[1].toFixed(1)+' A'+r+' '+r+' 0 '+big+' 1 '+q[0].toFixed(1)+' '+q[1].toFixed(1),fill:'none',stroke:col,'stroke-width':w})}
+  var g=document.getElementById('scala');
+  g.appendChild(arco(0,1,116,'#C33222',7));
+  g.appendChild(arco(1,1.5,116,'#44513F',7));
+  g.appendChild(arco(2.5,4,116,'#C33222',7));
+  for(var i=0;i<=40;i++){
+    var v=i/10, grande=i%10===0, medio=i%5===0;
+    var a=pt(v,110), b=pt(v,grande?92:medio?98:103);
+    g.appendChild(el('line',{x1:a[0].toFixed(1),y1:a[1].toFixed(1),x2:b[0].toFixed(1),y2:b[1].toFixed(1),stroke:'#2A3328','stroke-width':grande?3:1.3}));
+    if(grande){var t=pt(v,76),tx=el('text',{x:t[0].toFixed(1),y:(t[1]+8).toFixed(1),'text-anchor':'middle','font-family':'Archivo,Arial,sans-serif','font-size':24,'font-weight':700,fill:'#2A3328'});tx.textContent=v;g.appendChild(tx)}
+  }
+
+  var ago=document.getElementById('ago'), inp=document.getElementById('pressione'),
+      T=document.getElementById('lettura-t'), P=document.getElementById('lettura-p');
+  function leggi(v){
+    if(v<0.5) return ['Quasi a zero.','La caldaia va in blocco. L’impianto va ricaricato e bisogna capire da dove perde. Chiamaci.',1];
+    if(v<1)   return ['Pressione bassa.','Si ricarica dal rubinetto di carico sotto la caldaia. Se riscende in pochi giorni c’è una perdita o il vaso d’espansione è scarico.',1];
+    if(v<=1.5)return ['Tutto in ordine.','A impianto freddo la lancetta deve stare tra 1 e 1,5 bar.',0];
+    if(v<=2.5)return ['Un po’ alta.','Con i termosifoni accesi è normale che salga. Se è così anche a freddo, va tolta un po’ d’acqua da uno sfiato.',0];
+    return ['Troppo alta.','Verso i 3 bar si apre la valvola di sicurezza e la caldaia scarica acqua. Spegnila e chiamaci.',1];
+  }
+  function aggiorna(){
+    var v=parseFloat(inp.value), r=leggi(v);
+    ago.style.transform='rotate('+ang(v)+'deg)';
+    T.textContent=v.toFixed(1).replace('.',',')+' bar. '+r[0];
+    T.className=r[2]?'allarme':'';
+    P.textContent=r[1];
+    inp.setAttribute('aria-valuetext',v.toFixed(1).replace('.',',')+' bar');
+  }
+  inp.addEventListener('input',aggiorna);
+  // unico movimento automatico: la lancetta sale da zero al valore giusto
+  requestAnimationFrame(function(){requestAnimationFrame(aggiorna)});
+
+  var c=document.getElementById('copia');
+  c.addEventListener('click',function(){
+    var fatto=function(){c.textContent='Numero copiato';setTimeout(function(){c.textContent='Copia il numero'},2200)};
+    try{navigator.clipboard.writeText('+39 333 759 9212').then(fatto,function(){c.textContent='+39 333 759 9212'})}
+    catch(e){c.textContent='+39 333 759 9212'}
+  });
+})();
+</script>
+</body>
+</html>
